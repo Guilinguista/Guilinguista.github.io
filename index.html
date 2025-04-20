@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guilherme Antônio Silva – Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1f2937;
+            --accent-color: #2563eb;
+            --bg-color: #e5e7eb;
+            --text-color: #111827;
+            --card-bg: #ffffffee;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+            scroll-behavior: smooth;
+            display: flex; /* Usamos flexbox para o layout principal */
+            min-height: 100vh; /* Garante que o body tenha pelo menos a altura da viewport */
+        }
+
+        #sidebar { /* Estilo para a barra lateral fixa (o <aside>) */
+            width: 360px; /* Largura fixa da barra lateral */
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 1.5rem;
+            position: fixed; /* Torna a barra lateral fixa */
+            top: 0; /* Fixa no topo */
+            bottom: 0; /* Estica até a base */
+            overflow-y: auto; /* Adiciona scroll se o conteúdo da barra lateral for muito longo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10; /* Garante que fique acima do conteúdo principal */
+        }
+
+        #sidebar img {
+            width: 240px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1.5rem;
+        }
+
+        #sidebar h1 {
+             font-size: 1.7rem;
+             text-align: center;
+             margin-top: -1rem;
+             margin-bottom: 0.4rem;
+        }
+
+        #sidebar p {
+             text-align: center;
+             margin: 0.2rem 0;
+             font-size: 1rem;
+        }
+
+        #sidebar .link-list a {
+             color: white;
+             text-decoration: none;
+             display: flex;
+             align-items: center;
+             gap: 0.5rem;
+        }
+
+        #sidebar .link-list h4 {
+             margin-top: 1rem;
+             margin-bottom: 0.4rem;
+             font-size: 1.15rem;
+             color: white;
+             text-align: center;
+             width: 100%;
+        }
+
+
+        #main-content { /* Estilo para a área de conteúdo principal (<main>) */
+            flex: 1; /* Ocupa o restante do espaço horizontal */
+            margin-left: 360px; /* Adiciona margem para não ficar por baixo da barra lateral */
+            padding: 2rem 1rem;
+            /* O scroll será no <body> por padrão, não na #main-content */
+        }
+
+        section {
+            max-width: 960px; /* Mantém a largura máxima do conteúdo */
+            margin: 0 auto 2rem auto; /* Centraliza e adiciona margem inferior entre seções */
+            padding: 0 1rem; /* Padding lateral dentro da seção */
+            /* Removido padding-top e bottom, pois o margin-bottom da própria section já cria o espaçamento */
+        }
+         /* Ajuste para o h2 dentro da section */
+        section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 0.8rem;
+        }
+
+
+        .resume-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 1rem;
+            display: inline-block;
+             transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .resume-button:hover {
+             background: #1e3a8a;
+             transform: translateY(-2px);
+             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 0.8rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem; /* Reduzido um pouco o margin-bottom do card para melhor espaçamento interno da section */
+            box-shadow: var(--card-shadow);
+             transition: all 0.3s ease;
+        }
+         .card:hover {
+             transform: translateY(-6px);
+             box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+         }
+
+
+        .link-list a {
+            display: inline-block;
+            margin-right: 1rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+             transition: all 0.3s ease;
+        }
+         .link-list a:hover {
+             transform: translateX(4px);
+             opacity: 0.85;
+             color: var(--accent-color); /* Mantém a cor ou sutilmente muda */
+         }
+
+
+        ul {
+            padding-left: 1.2rem;
+        }
+         /* Ajustes para listas dentro dos cards */
+        .card ul {
+             list-style: none;
+             padding-left: 0;
+             margin-bottom: 0; /* Remove margem inferior padrão da ul */
+        }
+         .card li {
+             margin-bottom: 0.5rem; /* Espaço entre itens da lista */
+             line-height: 1.4;
+         }
+         .card li:last-child {
+             margin-bottom: 0;
+         }
+
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(40px) scale(0.98);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        /* Estilos para tags dentro dos cards */
+        .card span {
+            background-color: #dbeafe;
+            color: #1e40af;
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            margin-right: 0.4rem; /* Espaço entre tags */
+            margin-bottom: 0.4rem; /* Espaço abaixo se quebrar linha */
+            display: inline-block; /* Permite margin/padding e flex-wrap */
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+         .card span:hover {
+             background-color: #bfdbfe;
+             transform: scale(1.05);
+         }
+         .card .card-tag:hover { /* Mantido o estilo mais forte para a tag, se houver */
+             background-color: #c7d2fe;
+             transform: scale(1.07);
+             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+         }
+
+
+        @media (max-width: 768px) { /* Ajuste o breakpoint para o layout responsivo */
+            body {
+                flex-direction: column; /* Empilha a barra lateral e o conteúdo principal */
+            }
+
+            #sidebar {
+                position: relative; /* A barra lateral não é mais fixa */
+                width: 100%; /* Ocupa a largura total */
+                height: auto; /* Altura automática baseada no conteúdo */
+                padding: 2rem 1rem; /* Ajusta padding */
+                margin-left: 0; /* Remove a margem */
+                overflow-y: visible; /* Remove scrollbar se houver */
+                flex-direction: column; /* Garante que os itens internos fiquem empilhados */
+            }
+             #sidebar img {
+                 width: 120px; /* Reduz o tamanho da imagem */
+                 margin-bottom: 1rem;
+             }
+             #sidebar h1 {
+                 font-size: 1.5rem; /* Reduz o tamanho do título */
+             }
+             #sidebar p {
+                 font-size: 0.95rem; /* Ajusta tamanho do texto */
+             }
+             #sidebar .resume-button {
+                 font-size: 0.9rem;
+                 padding: 0.5rem 1rem;
+                 margin-top: 0.5rem;
+                 margin-bottom: 1rem;
+             }
+             #sidebar .link-list {
+                 display: flex; /* Mantém flex */
+                 flex-direction: column; /* Empilha os links */
+                 align-items: center; /* Centraliza os links */
+                 gap: 0.4rem; /* Reduz o espaço entre links */
+                 font-size: 0.9rem;
+             }
+             #sidebar .link-list a {
+                 margin-right: 0; /* Remove margem lateral */
+                 justify-content: center; /* Centraliza o ícone e texto */
+             }
+              #sidebar .link-list h4 {
+                 font-size: 1.05rem; /* Ajusta tamanho do título */
+                 margin-top: 0.8rem;
+                 margin-bottom: 0.3rem;
+              }
+
+
+            #main-content {
+                margin-left: 0; /* Remove a margem */
+                padding: 1.5rem 1rem; /* Ajusta padding */
+            }
+
+            section {
+                max-width: 100%; /* Usa a largura total no mobile */
+                padding: 0 0.5rem; /* Ajusta padding lateral da seção */
+                margin-bottom: 1.5rem; /* Ajusta margem inferior */
+            }
+            section h2 {
+                font-size: 1.5rem; /* Ajusta tamanho do título da seção */
+                margin-bottom: 1.2rem;
+                 padding-left: 0.6rem;
+            }
+
+            .card {
+                padding: 1.2rem; /* Ajusta padding do card */
+                 margin-bottom: 1.2rem; /* Ajusta margem inferior do card */
+            }
+             .card h3 {
+                 font-size: 1.1rem; /* Ajusta tamanho dos subtítulos dos cards */
+             }
+             .card p {
+                 font-size: 0.9rem; /* Ajusta tamanho do texto dos cards */
+             }
+
+             .grid {
+                 grid-template-columns: 1fr; /* Remove layout de duas colunas */
+             }
+
+        }
+
+        /* Estilos originais de hover mantidos */
+        .link-list a {
+            transition: all 0.3s ease;
+        }
+
+        .link-list a:hover {
+            transform: translateX(4px);
+            opacity: 0.85;
+            color: var(--accent-color);
+        }
+
+        .card {
+            transition: all 0.3s ease;
+        }
+         /* Nota: Os onmouseover/onmouseout inline foram mantidos por enquanto,
+            mas o hover no CSS também funciona. Pode remover os inline se preferir. */
+
+
+        .card span {
+            transition: all 0.3s ease;
+             cursor: default; /* Adicionado cursor para tags */
+        }
+
+        .card span:hover {
+            background-color: #bfdbfe;
+            transform: scale(1.05);
+        }
+        .card .card-tag:hover {
+            background-color: #c7d2fe;
+            transform: scale(1.07);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+
+    </style>
+</head>
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }); /* Ajuste rootMargin se necessário */
+
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <aside id="sidebar">
+        <img src="foto.jpg" alt="Guilherme Antônio Silva"> <h1>Guilherme Antônio Silva</h1> <p>Project & Product Manager</p> <p>São Paulo – Brazil</p> <p style="margin: 0.6rem 0 1rem; font-size: 1.05rem; font-style: italic; color: #e5e7eb; user-select: all;">gasguiantony@gmail.com</p> <a class="resume-button" href="cv.pdf" target="_blank">Download Résumé</a> <div class="link-list" style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; font-size: 0.95rem;"> <a href="https://www.linkedin.com/in/guilherme-agilist/" target="_blank">🔗 LinkedIn</a> <a href="https://github.com/Guilinguista" target="_blank">🐙 GitHub</a> <h4>📘 Certificações e Formação</h4> <a href="https://repositorio.ufu.br/bitstream/123456789/17729/1/RPosicaoCodaSilabica.pdf" target="_blank">📄 Master's Dissertation</a> <a href="https://www.credly.com/badges/916d0f90-ef47-4a2f-b30b-b9eb8f3c148d/linked_in_profile" target="_blank" style="padding-left: 0.7rem;">📜 PSM I Certification</a> </div>
+    </aside>
+
+    <main id="main-content">
+
+        <section class="fade-in">
+            <h2>👤 About</h2>
+            <div class="card fade-in" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 24px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--card-shadow)';">
+                <p><strong>Interested and experienced in leading cross-functional teams</strong> and <strong>delivering AI and machine learning solutions</strong>. I value <strong>serving without authority</strong> and creating space for <strong>collaboration, learning, and shared responsibility</strong>.</p>
+                <p>I’m motivated by <strong>building processes and environments</strong> that help people grow while <strong>driving outcomes that matter</strong>.</p>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>🧠 Projects</h2>
+            <div class="card fade-in">
+                <div style="margin-bottom: 0.8rem;">
+                    <h3 style="margin: 0 0 0.2rem 0;">Dutch Voice Optimization – MOS Score Recovery</h3>
+                    <p style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Role: Technical Project Manager</p>
+                    <p style="margin: 0; color: #6b7280; font-size: 0.9rem;">📈 Challenge: Recover a stagnant MOS score (3.4) for a Dutch TTS model</p>
+                    <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                        <span class="card-tag">TTS</span>
+                        <span class="card-tag">Agile</span>
+                        <span class="card-tag">MOS Evaluation</span>
+                    </div>
+                </div>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <p><strong>Problem:</strong> A senior stakeholder requested improvements to a Dutch TTS voice stuck at 3.4 MOS. The goal was to enhance perceptual quality and unlock production potential.</p>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <p><strong>Actions:</strong></p>
+                <ul> <li>📍 Created a roadmap with data cleanup, tested new architectures, and evaluation milestones</li>
+                    <li>👥 Worked alongside a language engineer to build and test new assets</li>
+                    <li>🛠 Introduced heuristic rules for pronunciation correction</li>
+                    <li>📊 Oversaw multiple crowdsourced testing rounds until the desired quality was achieved</li>
+                </ul>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <p><strong>Results:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">📈 4.2 MOS</span>. Led to my promotion and expansion into broader voice projects.</p>
+            </div>
+            <div class="card fade-in">
+                <div style="margin-bottom: 0.8rem;">
+                    <h3 style="margin: 0 0 0.2rem 0;">End-to-End Evaluation Pipeline for TTS Models</h3>
+                    <p style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Role: Technical Project Manager</p>
+                    <p style="margin: 0; color: #6b7280; font-size: 0.9rem;">🛠 Challenge: Automate TTS evaluation across multiple components and teams</p>
+                    <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                        <span class="card-tag">Automation</span>
+                        <span class="card-tag">TTS</span>
+                        <span class="card-tag">Frontend</span>
+                    </div>
+                </div>
+                <p><strong>Problem:</strong> Internal evaluation processes were manual, fragmented and time-consuming.</p>
+                <p><strong>Actions:</strong></p>
+                <ul> <li>🧱 Designed a modular pipeline integrating scraping, TTS generation, Dropbox storage, and crowdsourcing tools</li>
+                    <li>💻 Collaborated with developers to build an interactive frontend in HTML/JavaScript for result visualization</li>
+                    <li>📩 Automated result ingestion, asset filtering, and email dispatch to raters</li>
+                </ul>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <p><strong>Results:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">📊 Streamlined internal TTS evaluations</span>. The tool enabled fast A/B comparisons and reduced manual effort.</p>
+            </div>
+            <div class="card fade-in">
+                <div style="margin-bottom: 0.8rem;">
+                    <h3 style="margin: 0 0 0.2rem 0;">Multilingual TTS Development – Thai and Malay</h3>
+                    <p style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Role: Technical Project Manager</p>
+                    <p style="margin: 0; color: #6b7280; font-size: 0.9rem;">🌏 Challenge: Build new TTS products for under-resourced languages from scratch</p>
+                    <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                        <span class="card-tag">TTS</span>
+                        <span class="card-tag">Thai</span>
+                        <span class="card-tag">Malay</span>
+                        <span class="card-tag">Tacotron</span>
+                        <span class="card-tag">FastSpeech2</span>
+                    </div>
+                </div>
+                <p><strong>Problem:</strong> Stakeholders requested new TTS models for Thai and Malay, requiring full-cycle development from team setup to deployment.</p>
+                <p><strong>Actions:</strong></p>
+                <ul> <li>📋 Scoped project and aligned goals with stakeholders</li>
+                    <li>👨‍💻 Selected and onboarded engineers, identified data sources</li>
+                    <li>⚙️ Tested architectures (Tacotron, FastSpeech2) and selected optimal configuration</li>
+                    <li>🧪 Created QA strategy to reduce production errors</li>
+                    <li>🔄 Established a continuous improvement and bug-fixing pipeline</li>
+                </ul>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <p><strong>Results:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">🌟 Successfully launched Thai and Malay TTS voices</span>. Delivered with QA safeguards and ongoing improvement strategy.</p>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>🎓 Education</h2>
+            <div class="card fade-in">
+                <ul> <li>🎓 <strong>MBA in Project Management</strong> – USP/Esalq (ongoing)</li>
+                    <li>🤖 <strong>Technologist in Artificial Intelligence</strong> – FIAP</li>
+                    <li>📚 <strong>MA in Linguistics</strong> – Universidade Federal de Uberlândia</li>
+                    <li>📖 <strong>BA in Linguistics</strong> – Universidade Federal de Uberlândia</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>🧩 Skills</h2>
+            <div class="card fade-in">
+                <h3 style="margin-top: 0; font-size: 1.05rem; font-weight: 600; color: #374151;">Soft Skills</h3>
+                <p style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">Core interpersonal abilities that support project success and team dynamics.</p>
+                <ul> <li>🗣️ Negotiation and decision enablement</li>
+                    <li>📢 Communicating and escalating</li>
+                    <li>🌀 Flexibility and adaptability</li>
+                    <li>🧾 Organizational skills</li>
+                    <li>🕊️ Conflict mediation</li>
+                    <li>💡 Understanding motivations</li>
+                    <li>🤝 Stakeholder leadership</li>
+                    <li>🧠 Emotional intelligence</li>
+                </ul>
+            </div>
+            <div class="card fade-in">
+                <h3 style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">Management</h3>
+                <p style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">Tools and methods for planning, tracking and executing complex initiatives.</p>
+                <ul> <li>📊 Agile (Scrum, Kanban), Waterfall</li>
+                    <li>🛠 Jira, Confluence, Asana, Azure DevOps</li>
+                    <li>🗺 Roadmapping, Gantt charts, velocity tracking</li>
+                    <li>📌 RACI matrix, stakeholder alignment</li>
+                    <li>📈 KPI reporting, backlog management</li>
+                </ul>
+            </div>
+            <div class="card fade-in">
+                <h3 style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">AI, ML & Development</h3>
+                <p style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">End-to-end skills for AI product development, evaluation and delivery.</p>
+                <ul> <li>🔧 Git, AWS, Docker</li>
+                    <li>🗣️ TTS: Tacotron, FastSpeech2</li>
+                    <li>🧠 Prompt engineering: zero-shot, CoT, RAG</li>
+                    <li>📊 Data scraping & analysis (Pandas, Python)</li>
+                    <li>🧪 A/B testing, QA, MOS evaluation</li>
+                    <li>🤖 Crowdsourcing workflows</li>
+                    <li>💻 HTML, CSS, Dropbox API, automation</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>🏢 Experience</h2>
+            <div class="card fade-in">
+                <h3 style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">Experience Overview</h3>
+                <p style="color: #374151; font-size: 0.95rem;">Working with companies like Google, Apple, and Amazon gave me direct exposure to large-scale product delivery and global collaboration. I had the opportunity to work on-site at offices in Gdańsk and Cupertino, including a memorable experience at Apple Park.</p>
+                <p style="color: #374151; font-size: 0.95rem;">These roles allowed me to lead international teams, contribute to widely used technologies, and better understand how high-impact tech organizations operate from the inside. I also had the chance to collaborate with and learn from incredible professionals across diverse teams and disciplines.</p>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>🗣 Testimonials</h2>
+            <div class="grid">
+                <div class="card fade-in">
+                    <p style="font-style: italic; color: #374151;">“I worked with Gui as a computational linguist and voice builder for the Siri TTS team. As our Scrum Master and TPM, Gui consistently contributed to a positive and productive work atmosphere. He applied Agile methodologies and managed complex projects effectively. Gui was always supportive, and even with a heavy workload, he never overlooked any problem we brought to him.</p>
+                    <p style="font-style: italic; color: #374151;">One of the standout moments of our collaboration was when Gui initiated weekly machine learning presentations. These sessions allowed team members like myself to share insights and develop a collaborative learning environment, significantly enhancing our technical knowledge and bringing the team closer together.</p>
+                    <p style="font-style: italic; color: #374151;">Gui is proficient in both Portuguese and English, and his experience in NLP made him a key contributor to our TTS team. Gui’s supportive nature makes him the type of person who elevates those around him, enabling everyone to do their best work.”</p>
+                    <p style="text-align: right; margin-top: 1rem; color: #1e3a8a;"><strong>– Nicholas Loo</strong><br><span style="font-size: 0.9rem; color: #4b5563;">Applied Machine Learning Engineer, Apple</span></p>
+                </div>
+
+                <div class="card fade-in">
+                    <p style="font-style: italic; color: #374151;">“I had the pleasure of working with Gui on the Siri TTS team at Apple. Gui impressed me and others on the team with his depth of knowledge and ability to drive results. As a technical project manager, Gui consistently provided support and leadership to colleagues working at different stages of development, drawing on his own experience in building end-to-end text-to-speech systems to solve problems and escalate issues as necessary.</p>
+                    <p style="font-style: italic; color: #374151;">He brings a versatile technical skillset in computational linguistics, machine learning and data analysis as well as the key Agile and Scrum methodologies that will help any team to plan and execute successful sprints.”</p>
+                    <p style="text-align: right; margin-top: 1rem; color: #1e3a8a;"><strong>– Anastasia Nylund</strong><br><span style="font-size: 0.9rem; color: #4b5563;">Language Expansion Engineer, Apple</span></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top" style="display: none;position: fixed; bottom: 2rem; right: 2rem; background: var(--accent-color); color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px; font-weight: 600; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; z-index: 100;">⬆️</button>
+    <script>
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 400) {
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
