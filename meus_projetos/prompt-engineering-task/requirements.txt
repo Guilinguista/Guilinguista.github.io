@@ -1,5 +1,0 @@
-argparse
-requests
-beautifulsoup4
-python-pptx
-cohere
