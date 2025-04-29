@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guilherme Antônio Silva – Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos CSS com ajustes finais */
+        :root { --primary-color: #1f2937; --accent-color: #2563eb; --bg-color: #e5e7eb; --text-color: #111827; --card-bg: #ffffffee; --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: var(--bg-color); color: var(--text-color); scroll-behavior: smooth; display: flex; min-height: 100vh; }
+        /* Overflow da sidebar alterado para hidden */
+        #sidebar { width: 360px; background-color: var(--primary-color); color: white; padding: 2rem 1.5rem; position: fixed; top: 0; bottom: 0; overflow-y: hidden; /* Changed from auto to hidden */ display: flex; flex-direction: column; align-items: center; z-index: 10; }
+        #sidebar img { width: 240px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); margin-bottom: 1.5rem; margin-top: 0; }
+        #sidebar h1 { font-size: 1.7rem; text-align: center; margin-top: -1rem; margin-bottom: 0.4rem; }
+        #sidebar p { text-align: center; margin: 0.2rem 0; font-size: 1rem; }
+        #sidebar .link-list a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; }
+        #sidebar .link-list a:hover { transform: translateX(4px); opacity: 0.85; }
+        #sidebar .link-list h4 { margin-top: 0.8rem; margin-bottom: 0.4rem; font-size: 1.15rem; color: white; text-align: center; width: 100%; }
+        #main-content { flex: 1; margin-left: 360px; padding: 1rem 1rem 2rem 1rem; } /* Padding top ajustado para 1rem */
+        section { max-width: 960px; margin: 0 auto 2rem auto; padding: 0 1rem; }
+        section h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 1.8rem; border-left: 4px solid var(--accent-color); padding-left: 0.8rem; }
+        .resume-button { background: var(--accent-color); color: white; padding: 0.6rem 1.2rem; border: none; border-radius: 6px; font-weight: 600; text-decoration: none; margin-top: 0.8rem; display: inline-block; transition: background 0.3s ease, transform 0.2s ease; }
+        .resume-button:hover { background: #1e3a8a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .card { background: var(--card-bg); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--card-shadow); transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12); }
+        #main-content .link-list a { display: inline-block; margin-right: 1rem; color: var(--accent-color); text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+        #main-content .link-list a:hover { transform: translateX(4px); opacity: 0.85; }
+        ul { padding-left: 1.2rem; }
+        .card ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+        .card li { margin-bottom: 0.5rem; line-height: 1.4; }
+        .card li:last-child { margin-bottom: 0; }
+        .grid { display: grid; gap: 1.5rem; }
+        @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
+        .fade-in { opacity: 0; visibility: hidden; transform: translateY(40px) scale(0.98); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fade-in.visible { opacity: 1; transform: translateY(0); visibility: visible; }
+        .card span { transition: all 0.3s ease; }
+        .card span:hover { background-color: #bfdbfe; transform: scale(1.05); }
+        .card .card-tag { background-color: #dbeafe; color: #1e40af; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.75rem; margin-right: 0.4rem; margin-bottom: 0.4rem; display: inline-block; cursor: default; }
+        .card .card-tag:hover { background-color: #c7d2fe; transform: scale(1.07); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .lang-pt { display: none; }
+        .lang-en { display: block; }
+        .lang-en span, .lang-en strong, .lang-en a, .lang-en em, .lang-en i, .lang-en b,
+        .lang-pt span, .lang-pt strong, .lang-pt a, .lang-pt em, .lang-pt i, .lang-pt b { display: revert; }
+        /* Estilos para o novo botão de idioma */
+        #lang-toggle-btn {
+            position: fixed;
+            top: 1rem; /* Posição no topo */
+            right: 1.5rem; /* Posição na direita */
+            z-index: 20; /* Acima de outros elementos */
+            background-color: var(--card-bg); /* Fundo similar aos cards */
+            color: var(--accent-color); /* Cor do texto */
+            border: 1px solid var(--accent-color); /* Borda sutil */
+            padding: 0.4rem 0.8rem; /* Padding interno */
+            border-radius: 6px; /* Cantos arredondados */
+            font-size: 0.85rem; /* Tamanho da fonte */
+            font-weight: 600; /* Peso da fonte */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #lang-toggle-btn:hover {
+            background-color: #dbeafe; /* Leve mudança no hover */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) { /* Mobile styles omitidos por brevidade */ }
+        /* Removida regra #lang-toggle */
+        /* Removida regra #lang-toggle-container */
+    </style>
+</head>
+<body>
+
+    <aside id="sidebar">
+      <img src="foto.jpg" alt="Guilherme Antônio Silva">
+       <h1>Guilherme Antônio Silva</h1>
+       <p class="lang-en">Project & Product Manager</p>
+       <p class="lang-pt">Gerente de Projetos e Produtos</p>
+       <p class="lang-en">São Paulo – Brazil</p>
+       <p class="lang-pt">São Paulo – Brasil</p>
+       <p style="margin: 0.6rem 0 1rem; font-size: 1.05rem; font-style: italic; color: #e5e7eb; user-select: all;">
+         gasguiantony@gmail.com
+       </p>
+       <a class="resume-button" id="resume-download-button" href="cv_en.pdf" target="_blank">
+           <span class="lang-en" style="display: inline;">Download Résumé</span>
+           <span class="lang-pt" style="display: none;">Baixar Currículo</span>
+       </a>
+       <div class="link-list" style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; font-size: 0.95rem;">
+         <a href="https://www.linkedin.com/in/guilherme-agilist/" target="_blank" style="margin-top: 12px;">🔗 LinkedIn</a>
+         <a href="https://github.com/Guilinguista" target="_blank">🐙 GitHub</a>
+         <a href="https://github.com/Guilinguista/meus_projetos" target="_blank">
+             <span class="lang-en">📂 My ML Projects</span>
+             <span class="lang-pt">📂 Meus Projetos de ML</span>
+         </a>
+         <h4>
+             <span class="lang-en">📘 Education & Credentials</span>
+             <span class="lang-pt">📘 Formação e Credenciais</span>
+         </h4>
+         <a href="https://repositorio.ufu.br/bitstream/123456789/17729/1/RPosicaoCodaSilabica.pdf" target="_blank">
+              <span class="lang-en">📄 Master's Dissertation</span>
+              <span class="lang-pt">📄 Dissertação de Mestrado</span>
+         </a>
+         <a href="https://www.credly.com/badges/916d0f90-ef47-4a2f-b30b-b9eb8f3c148d/linked_in_profile" target="_blank" style="padding-left: 0.7rem;">
+             <span class="lang-en">📜 PSM I Certification</span>
+             <span class="lang-pt">📜 Certificação PSM I</span>
+         </a>
+         <a href="ml_certificate.pdf" target="_blank">
+              📜 <span class="lang-en">ML certificate</span><span class="lang-pt" style="display: none;">Certificado de ML</span>
+         </a>
+         <a href="cognitive_services.pdf" target="_blank">
+              📜 <span class="lang-en">Cognitive Services</span><span class="lang-pt" style="display: none;">Serviços Cognitivos</span>
+         </a>
+       </div>
+    </aside>
+
+    <main id="main-content">
+        <section class="fade-in"> <h2 class="lang-en">👤 About</h2><h2 class="lang-pt">👤 Sobre</h2>
+            <div class="card fade-in" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 24px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--card-shadow)';">
+                 <p class="lang-en"><strong>Interested and experienced in leading cross-functional teams</strong> and <strong>delivering AI and machine learning solutions</strong>. I value <strong>serving without authority</strong> and creating space for <strong>collaboration, learning, and shared responsibility</strong>.</p><p class="lang-pt"><strong>Interessado e experiente em liderar equipes multifuncionais</strong> e <strong>entregar soluções de IA e machine learning</strong>. Valorizo <strong>servir sem autoridade</strong> e criar espaço para <strong>colaboração, aprendizado e responsabilidade compartilhada</strong>.</p>
+                 <p class="lang-en">I’m motivated by <strong>building processes and environments</strong> that help people grow while <strong>driving outcomes that matter</strong>.</p><p class="lang-pt">Sou motivado por <strong>construir processos e ambientes</strong> que ajudam as pessoas a crescer enquanto <strong>impulsionam resultados que importam</strong>.</p>
+            </div>
+        </section>
+        <section class="fade-in"> <h2 class="lang-en">🧠 Projects</h2><h2 class="lang-pt">🧠 Projetos</h2>
+            <div class="card fade-in">
+                <div style="margin-bottom: 0.8rem;">
+                    <h3 class="lang-en" style="margin: 0 0 0.2rem 0;">Dutch Voice Optimization – MOS Score Recovery</h3><h3 class="lang-pt" style="margin: 0 0 0.2rem 0;">Otimização de Voz Holandesa – Recuperação da Pontuação MOS</h3>
+                    <p class="lang-en" style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Role: Technical Project Manager</p><p class="lang-pt" style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Função: Gerente Técnico de Projetos</p>
+                    <p class="lang-en" style="margin: 0; color: #6b7280; font-size: 0.9rem;">📈 Challenge: Recover a stagnant MOS score (3.4) for a Dutch TTS model</p><p class="lang-pt" style="margin: 0; color: #6b7280; font-size: 0.9rem;">📈 Desafio: Recuperar uma pontuação MOS estagnada (3.4) para um modelo TTS holandês</p>
+                    <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                        <span class="card-tag">TTS</span><span class="card-tag">Agile</span><span class="card-tag lang-en" style="display: inline-block;">MOS Evaluation</span><span class="card-tag lang-pt" style="display: none;">Avaliação MOS</span>
+                    </div>
+                </div>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <p class="lang-en"><strong>Problem:</strong> A senior stakeholder requested improvements to a Dutch TTS voice stuck at 3.4 MOS. The goal was to enhance perceptual quality and unlock production potential.</p><p class="lang-pt"><strong>Problema:</strong> Um stakeholder sênior solicitou melhorias para uma voz TTS holandesa travada em 3.4 MOS. O objetivo era melhorar a qualidade perceptual e desbloquear o potencial de produção.</p>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                <p class="lang-en"><strong>Actions:</strong></p><p class="lang-pt"><strong>Ações:</strong></p>
+                <ul>
+                    <li class="lang-en">📍 Created a roadmap with data cleanup, tested new architectures, and evaluation milestones</li><li class="lang-pt">📍 Criei um roadmap com limpeza de dados, testei novas arquiteturas e marcos de avaliação</li>
+                    <li class="lang-en">👥 Worked alongside a language engineer to build and test new assets</li><li class="lang-pt">👥 Trabalhei junto com um engenheiro de linguagem para construir e testar novos ativos</li>
+                    <li class="lang-en">🛠 Introduced heuristic rules for pronunciation correction</li><li class="lang-pt">🛠 Introduzi regras heurísticas para correção de pronúncia</li>
+                    <li class="lang-en">📊 Oversaw multiple crowdsourced testing rounds until the desired quality was achieved</li><li class="lang-pt">📊 Supervisionei múltiplas rodadas de testes crowdsourced até que a qualidade desejada fosse alcançada</li>
+                 </ul>
+                <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                 <p class="lang-en"><strong>Results:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">📈 4.2 MOS</span>. Led to my promotion and expansion into broader voice projects.</p><p class="lang-pt"><strong>Resultados:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">📈 4.2 MOS</span>. Levou à minha promoção e expansão para projetos de voz mais amplos.</p>
+            </div>
+             <div class="card fade-in">
+                  <div style="margin-bottom: 0.8rem;">
+                      <h3 class="lang-en" style="margin: 0 0 0.2rem 0;">End-to-End Evaluation Pipeline for TTS Models</h3><h3 class="lang-pt" style="margin: 0 0 0.2rem 0;">Pipeline de Avaliação de Ponta a Ponta para Modelos TTS</h3>
+                      <p class="lang-en" style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Role: Technical Project Manager</p><p class="lang-pt" style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Função: Gerente Técnico de Projetos</p>
+                      <p class="lang-en" style="margin: 0; color: #6b7280; font-size: 0.9rem;">🛠 Challenge: Automate TTS evaluation across multiple components and teams</p><p class="lang-pt" style="margin: 0; color: #6b7280; font-size: 0.9rem;">🛠 Desafio: Automatizar a avaliação de TTS entre múltiplos componentes e equipes</p>
+                      <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                          <span class="card-tag lang-en" style="display: inline-block;">Automation</span><span class="card-tag lang-pt" style="display: none;">Automação</span><span class="card-tag">TTS</span><span class="card-tag">Frontend</span>
+                      </div>
+                  </div>
+                  <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                  <p class="lang-en"><strong>Problem:</strong> Internal evaluation processes were manual, fragmented and time-consuming.</p><p class="lang-pt"><strong>Problema:</strong> Os processos de avaliação interna eram manuais, fragmentados e demorados.</p>
+                  <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                  <p class="lang-en"><strong>Actions:</strong></p><p class="lang-pt"><strong>Ações:</strong></p>
+                  <ul>
+                      <li class="lang-en">🧱 Designed a modular pipeline integrating scraping, TTS generation, Dropbox storage, and crowdsourcing tools</li><li class="lang-pt">🧱 Projetei um pipeline modular integrando scraping, geração de TTS, armazenamento Dropbox e ferramentas de crowdsourcing</li>
+                      <li class="lang-en">💻 Collaborated with developers to build an interactive frontend in HTML/JavaScript for result visualization</li><li class="lang-pt">💻 Colaborei com desenvolvedores para construir um frontend interativo em HTML/JavaScript para visualização de resultados</li>
+                      <li class="lang-en">📩 Automated result ingestion, asset filtering, and email dispatch to raters</li><li class="lang-pt">📩 Automatizei a ingestão de resultados, filtragem de ativos e envio de e-mails para avaliadores</li>
+                  </ul>
+                  <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                   <p class="lang-en"><strong>Results:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">📊 Streamlined internal TTS evaluations</span>. The tool enabled fast A/B comparisons and reduced manual effort.</p>
+                   <p class="lang-pt"><strong>Resultados:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">📊 Avaliações internas de TTS otimizadas</span>. A ferramenta permitiu comparações A/B rápidas e reduziu o esforço manual.</p>
+             </div>
+             <div class="card fade-in">
+                   <div style="margin-bottom: 0.8rem;">
+                       <h3 class="lang-en" style="margin: 0 0 0.2rem 0;">TTS Development – Thai and Malay</h3><h3 class="lang-pt" style="margin: 0 0 0.2rem 0;">Desenvolvimento TTS – Tailandês e Malaio</h3>
+                       <p class="lang-en" style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Role: Technical Project Manager</p><p class="lang-pt" style="margin: 0; font-style: italic; color: #374151; font-size: 0.95rem;">Função: Gerente Técnico de Projetos</p>
+                       <p class="lang-en" style="margin: 0; color: #6b7280; font-size: 0.9rem;">🌏 Challenge: Build new TTS products for under-resourced languages from scratch</p><p class="lang-pt" style="margin: 0; color: #6b7280; font-size: 0.9rem;">🌏 Desafio: Construir novos produtos TTS para idiomas com poucos recursos do zero</p>
+                       <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                           <span class="card-tag">TTS</span><span class="card-tag lang-en" style="display: inline-block;">Thai</span><span class="card-tag lang-pt" style="display: none;">Tailandês</span><span class="card-tag lang-en" style="display: inline-block;">Malay</span><span class="card-tag lang-pt" style="display: none;">Malaio</span><span class="card-tag">Tacotron</span><span class="card-tag">FastSpeech2</span>
+                       </div>
+                   </div>
+                   <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                   <p class="lang-en"><strong>Problem:</strong> Stakeholders requested new TTS models for Thai and Malay, requiring full-cycle development from team setup to deployment.</p><p class="lang-pt"><strong>Problema:</strong> Stakeholders solicitaram novos modelos TTS para tailandês e malaio, exigindo desenvolvimento de ciclo completo desde a configuração da equipe até a implantação.</p>
+                   <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                   <p class="lang-en"><strong>Actions:</strong></p><p class="lang-pt"><strong>Ações:</strong></p>
+                   <ul>
+                       <li class="lang-en">📋 Scoped project and aligned goals with stakeholders</li><li class="lang-pt">📋 Defini o escopo do projeto e alinhei metas com os stakeholders</li>
+                       <li class="lang-en">👨‍💻 Selected and onboarded engineers, identified data sources</li><li class="lang-pt">👨‍💻 Selecionei e integrei engenheiros, identifiquei fontes de dados</li>
+                       <li class="lang-en">⚙️ Tested architectures (Tacotron, FastSpeech2) and selected optimal configuration</li><li class="lang-pt">⚙️ Testei arquiteturas (Tacotron, FastSpeech2) e selecionei a configuração ótima</li>
+                       <li class="lang-en">🧪 Created QA strategy to reduce production errors</li><li class="lang-pt">🧪 Criei estratégia de QA para reduzir erros de produção</li>
+                       <li class="lang-en">🔄 Established a continuous improvement and bug-fixing pipeline</li><li class="lang-pt">🔄 Estabeleci um pipeline de melhoria contínua e correção de bugs</li>
+                   </ul>
+                  <hr style="margin: 1.2rem 0; border: none; border-top: 1px solid #ccc;" />
+                   <p class="lang-en"><strong>Results:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">🌟 Successfully launched Thai and Malay TTS voices</span>. Delivered with QA safeguards and ongoing improvement strategy.</p>
+                   <p class="lang-pt"><strong>Resultados:</strong> <span style="display:inline-block;font-size:1.1rem;font-weight:700;color:#1e40af;background-color:#e0f2fe;padding:0.2rem 0.5rem;border-radius:6px;">🌟 Lancei com sucesso as vozes TTS em tailandês e malaio</span>. Entreguei com salvaguardas de QA e estratégia de melhoria contínua.</p>
+             </div>
+        </section>
+         <section class="fade-in"> <h2 class="lang-en">🎓 Education</h2><h2 class="lang-pt">🎓 Formação</h2>
+              <div class="card fade-in">
+                  <ul>
+                      <li class="lang-en">🎓 <strong>MBA in Project Management</strong> – USP/Esalq (ongoing)</li><li class="lang-pt">🎓 <strong>MBA em Gestão de Projetos</strong> – USP/Esalq (em andamento)</li>
+                      <li class="lang-en">🤖 <strong>Technologist in Artificial Intelligence</strong> – FIAP</li><li class="lang-pt">🤖 <strong>Tecnólogo em Inteligência Artificial</strong> – FIAP</li>
+                      <li class="lang-en">📚 <strong>MA in Linguistics</strong> – Universidade Federal de Uberlândia</li><li class="lang-pt">📚 <strong>Mestrado em Linguística</strong> – Universidade Federal de Uberlândia</li>
+                      <li class="lang-en">📖 <strong>BA in Linguistics</strong> – Universidade Federal de Uberlândia</li><li class="lang-pt">📖 <strong>Bacharelado em Linguística</strong> – Universidade Federal de Uberlândia</li>
+                  </ul>
+              </div>
+          </section>
+          <section class="fade-in"> <h2 class="lang-en">🧩 Skills</h2><h2 class="lang-pt">🧩 Habilidades</h2>
+              <div class="card fade-in">
+                   <h3 class="lang-en" style="margin-top: 0; font-size: 1.05rem; font-weight: 600; color: #374151;">Soft Skills</h3><h3 class="lang-pt" style="margin-top: 0; font-size: 1.05rem; font-weight: 600; color: #374151;">Habilidades Interpessoais</h3>
+                   <p class="lang-en" style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">Core interpersonal abilities that support project success and team dynamics.</p><p class="lang-pt" style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">Habilidades interpessoais essenciais que apoiam o sucesso do projeto e a dinâmica da equipe.</p>
+                   <ul>
+                       <li class="lang-en">🗣️ Negotiation and decision enablement</li><li class="lang-pt">🗣️ Negociação e facilitação de decisões</li>
+                       <li class="lang-en">📢 Communicating and escalating</li><li class="lang-pt">📢 Comunicação e escalonamento</li>
+                       <li class="lang-en">🌀 Flexibility and adaptability</li><li class="lang-pt">🌀 Flexibilidade e adaptabilidade</li>
+                       <li class="lang-en">🧾 Organizational skills</li><li class="lang-pt">🧾 Habilidades organizacionais</li>
+                       <li class="lang-en">🕊️ Conflict mediation</li><li class="lang-pt">🕊️ Mediação de conflitos</li>
+                       <li class="lang-en">💡 Understanding motivations</li><li class="lang-pt">💡 Compreensão de motivações</li>
+                       <li class="lang-en">🤝 Stakeholder leadership</li><li class="lang-pt">🤝 Liderança de stakeholders</li>
+                       <li class="lang-en">🧠 Emotional intelligence</li><li class="lang-pt">🧠 Inteligência emocional</li>
+                   </ul>
+              </div>
+              <div class="card fade-in">
+                   <h3 class="lang-en" style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">Management</h3><h3 class="lang-pt" style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">Gerenciamento</h3>
+                   <p class="lang-en" style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">Tools and methods for planning, tracking and executing complex initiatives.</p><p class="lang-pt" style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">Ferramentas e métodos para planejar, rastrear e executar iniciativas complexas.</p>
+                   <ul>
+                        <li class="lang-en">📊 Agile (Scrum, Kanban), Waterfall</li><li class="lang-pt">📊 Ágil (Scrum, Kanban), Cascata</li>
+                        <li class="lang-en">🛠 Jira, Confluence, Asana, Azure DevOps</li><li class="lang-pt">🛠 Jira, Confluence, Asana, Azure DevOps</li>
+                        <li class="lang-en">🗺 Roadmapping, Gantt charts, velocity tracking</li><li class="lang-pt">🗺 Roadmapping, gráficos de Gantt, acompanhamento de velocidade</li>
+                        <li class="lang-en">📌 RACI matrix, stakeholder alignment</li><li class="lang-pt">📌 Matriz RACI, alinhamento de stakeholders</li>
+                        <li class="lang-en">📈 KPI reporting, backlog management</li><li class="lang-pt">📈 Relatórios de KPI, gerenciamento de backlog</li>
+                   </ul>
+              </div>
+              <div class="card fade-in">
+                    <h3 class="lang-en" style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">AI, ML & Development</h3><h3 class="lang-pt" style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">IA, ML e Desenvolvimento</h3>
+                   <p class="lang-en" style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">End-to-end skills for AI product development, evaluation and delivery.</p><p class="lang-pt" style="color: #374151; font-size: 0.95rem; margin-bottom: 1rem;">Habilidades de ponta a ponta para desenvolvimento, avaliação e entrega de produtos de IA.</p>
+                   <ul>
+                       <li class="lang-en">🔧 Git, AWS, Docker</li><li class="lang-pt">🔧 Git, AWS, Docker</li>
+                       <li class="lang-en">🗣️ TTS: Tacotron, FastSpeech2</li><li class="lang-pt">🗣️ TTS: Tacotron, FastSpeech2</li>
+                       <li class="lang-en">🧠 Prompt engineering: zero-shot, CoT, RAG</li><li class="lang-pt">🧠 Engenharia de prompt: zero-shot, CoT, RAG</li>
+                       <li class="lang-en">📊 Data scraping & analysis (Pandas, Python)</li><li class="lang-pt">📊 Coleta e análise de dados (Pandas, Python)</li>
+                       <li class="lang-en">🧪 A/B testing, QA, MOS evaluation</li><li class="lang-pt">🧪 Teste A/B, QA, avaliação MOS</li>
+                       <li class="lang-en">🤖 Crowdsourcing workflows</li><li class="lang-pt">🤖 Fluxos de trabalho de crowdsourcing</li>
+                       <li class="lang-en">💻 HTML, CSS, Dropbox API, automation</li><li class="lang-pt">💻 HTML, CSS, API Dropbox, automação</li>
+                   </ul>
+              </div>
+          </section>
+           <section class="fade-in"> <h2 class="lang-en">🏢 Experience</h2><h2 class="lang-pt">🏢 Experiência</h2>
+               <div class="card fade-in">
+                   <h3 class="lang-en" style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">Experience Overview</h3><h3 class="lang-pt" style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">Visão Geral da Experiência</h3>
+                   <p class="lang-en" style="color: #374151; font-size: 0.95rem;">Working with companies like Google, Apple, and Amazon gave me direct exposure to large-scale product delivery and global collaboration. I had the opportunity to work on-site at offices in Gdańsk and Cupertino, including a memorable experience at Apple Park.</p><p class="lang-pt" style="color: #374151; font-size: 0.95rem;">Trabalhar com empresas como Google, Apple e Amazon me deu exposição direta à entrega de produtos em larga escala e colaboração global. Tive a oportunidade de trabalhar presencialmente em escritórios em Gdańsk e Cupertino, incluindo uma experiência memorável no Apple Park.</p>
+                   <p class="lang-en" style="color: #374151; font-size: 0.95rem;">These roles allowed me to lead international teams, contribute to widely used technologies, and better understand how high-impact tech organizations operate from the inside. I also had the chance to collaborate with and learn from incredible professionals across diverse teams and disciplines.</p><p class="lang-pt" style="color: #374151; font-size: 0.95rem;">Essas funções me permitiram liderar equipes internacionais, contribuir para tecnologias amplamente utilizadas e entender melhor como organizações de tecnologia de alto impacto operam por dentro. Também tive a chance de colaborar e aprender com profissionais incríveis em diversas equipes e disciplinas.</p>
+               </div>
+           </section>
+         <section class="fade-in"> <h2 class="lang-en">🗣 Testimonials</h2><h2 class="lang-pt">🗣 Depoimentos</h2>
+             <div class="grid">
+                 <div class="card fade-in"> <p class="lang-en" style="font-style: italic; color: #374151;">“I worked with Gui as a computational linguist and voice builder for the Siri TTS team. As our Scrum Master and TPM, Gui consistently contributed to a positive and productive work atmosphere. He applied Agile methodologies and managed complex projects effectively. Gui was always supportive, and even with a heavy workload, he never overlooked any problem we brought to him.</p><p class="lang-pt" style="font-style: italic; color: #374151;">“Trabalhei com o Gui como linguista computacional e construtor de voz para a equipe Siri TTS. Como nosso Scrum Master e TPM, Gui contribuiu consistentemente para uma atmosfera de trabalho positiva e produtiva. Ele aplicou metodologias ágeis e gerenciou projetos complexos de forma eficaz. Gui sempre foi solidário e, mesmo com uma carga de trabalho pesada, nunca negligenciou nenhum problema que lhe apresentamos.</p>
+                      <p class="lang-en" style="font-style: italic; color: #374151;">One of the standout moments of our collaboration was when Gui initiated weekly machine learning presentations. These sessions allowed team members like myself to share insights and develop a collaborative learning environment, significantly enhancing our technical knowledge and bringing the team closer together.</p><p class="lang-pt" style="font-style: italic; color: #374151;">Um dos momentos marcantes de nossa colaboração foi quando Gui iniciou apresentações semanais de machine learning. Essas sessões permitiram que membros da equipe como eu compartilhassem insights e desenvolvessem um ambiente de aprendizado colaborativo, aprimorando significativamente nosso conhecimento técnico e aproximando a equipe.</p>
+                      <p class="lang-en" style="font-style: italic; color: #374151;">Gui is proficient in both Portuguese and English, and his experience in NLP made him a key contributor to our TTS team. Gui’s supportive nature makes him the type of person who elevates those around him, enabling everyone to do their best work.”</p><p class="lang-pt" style="font-style: italic; color: #374151;">Gui é proficiente em português e inglês, e sua experiência em PNL o tornou um contribuidor chave para nossa equipe de TTS. A natureza solidária de Gui o torna o tipo de pessoa que eleva aqueles ao seu redor, permitindo que todos façam seu melhor trabalho.”</p>
+                       <p class="lang-en" style="text-align: right; margin-top: 1rem; color: #1e3a8a;"><strong>– Nicholas Loo</strong><br><span style="font-size: 0.9rem; color: #4b5563;">Applied Machine Learning Engineer, Apple</span></p><p class="lang-pt" style="text-align: right; margin-top: 1rem; color: #1e3a8a;"><strong>– Nicholas Loo</strong><br><span style="font-size: 0.9rem; color: #4b5563;">Engenheiro de Machine Learning Aplicado, Apple</span></p>
+                  </div>
+                  <div class="card fade-in"> <p class="lang-en" style="font-style: italic; color: #374151;">“I had the pleasure of working with Gui on the Siri TTS team at Apple. Gui impressed me and others on the team with his depth of knowledge and ability to drive results. As a technical project manager, Gui consistently provided support and leadership to colleagues working at different stages of development, drawing on his own experience in building end-to-end text-to-speech systems to solve problems and escalate issues as necessary.</p><p class="lang-pt" style="font-style: italic; color: #374151;">“Tive o prazer de trabalhar com Gui na equipe Siri TTS da Apple. Gui me impressionou e a outros na equipe com sua profundidade de conhecimento e capacidade de gerar resultados. Como gerente técnico de projetos, Gui forneceu consistentemente apoio e liderança aos colegas que trabalham em diferentes estágios de desenvolvimento, aproveitando sua própria experiência na construção de sistemas de conversão de texto em fala de ponta a ponta para resolver problemas e escalar questões conforme necessário.</p>
+                       <p class="lang-en" style="font-style: italic; color: #374151;">He brings a versatile technical skillset in computational linguistics, machine learning and data analysis as well as the key Agile and Scrum methodologies that will help any team to plan and execute successful sprints.”</p><p class="lang-pt" style="font-style: italic; color: #374151;">Ele traz um conjunto de habilidades técnicas versátil em linguística computacional, machine learning e análise de dados, bem como as principais metodologias Agile e Scrum que ajudarão qualquer equipe a planejar e executar sprints bem-sucedidos.”</p>
+                       <p class="lang-en" style="text-align: right; margin-top: 1rem; color: #1e3a8a;"><strong>– Anastasia Nylund</strong><br><span style="font-size: 0.9rem; color: #4b5563;">Language Expansion Engineer, Apple</span></p><p class="lang-pt" style="text-align: right; margin-top: 1rem; color: #1e3a8a;"><strong>– Anastasia Nylund</strong><br><span style="font-size: 0.9rem; color: #4b5563;">Engenheira de Expansão de Idiomas, Apple</span></p>
+                  </div>
+             </div>
+         </section>
+
+    </main>
+
+    <button id="lang-toggle-btn" title="Change Language">EN</button> <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top" style="display: none;position: fixed; bottom: 2rem; right: 2rem; background: var(--accent-color); color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px; font-weight: 600; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; z-index: 100;">⬆️</button>
+
+    <script>
+        // Scripts JS - Atualizado para novo botão de idioma
+         document.addEventListener('DOMContentLoaded', () => { // Intersection Observer
+             const elements = document.querySelectorAll('.fade-in');
+             const observer = new IntersectionObserver(entries => {
+                 entries.forEach(entry => {
+                     if (entry.isIntersecting) {
+                         entry.target.classList.add('visible');
+                         observer.unobserve(entry.target);
+                     }
+                 });
+             }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+             elements.forEach(el => observer.observe(el));
+         });
+         window.addEventListener('scroll', () => { // Back to top button
+             const btn = document.getElementById('backToTop');
+             if (window.scrollY > 400) { btn.style.display = 'block'; }
+             else { btn.style.display = 'none'; }
+         });
+         document.addEventListener('DOMContentLoaded', () => { // Language Switching
+              // Seletores atualizados
+              const langToggleButton = document.getElementById('lang-toggle-btn'); // Novo botão
+              const resumeButton = document.getElementById('resume-download-button');
+              const elementsToToggle = document.querySelectorAll('.lang-en, .lang-pt');
+              const htmlElement = document.documentElement;
+              const titleElement = document.querySelector('title');
+
+              const resumeData = {
+                  en: { file: "cv_en.pdf", title: "Guilherme Antônio Silva – Portfolio" },
+                  pt: { file: "cv_pt.pdf", title: "Guilherme Antônio Silva – Portfólio" }
+              };
+
+              function setLanguage(lang) {
+                  if (lang !== 'en' && lang !== 'pt') { lang = 'en'; }
+                  htmlElement.lang = lang;
+                  titleElement.textContent = resumeData[lang].title;
+
+                  // Atualizar texto do botão de idioma
+                  if(langToggleButton) {
+                      langToggleButton.textContent = (lang === 'en' ? 'PT' : 'EN'); // Mostra o idioma para o qual mudar
+                      langToggleButton.title = (lang === 'en' ? 'Mudar para Português' : 'Switch to English');
+                  }
+
+
+                  elementsToToggle.forEach(el => {
+                       // Store original display before changing if not already stored
+                       if (!el.dataset.originalDisplay && window.getComputedStyle(el).display !== 'none') {
+                            el.dataset.originalDisplay = window.getComputedStyle(el).display;
+                        }
+
+                      if (el.classList.contains(`lang-${lang}`)) {
+                          const elementType = el.tagName.toLowerCase();
+                          const originalDisplay = el.dataset.originalDisplay;
+
+                          // Restore original display or set default
+                          if (originalDisplay && originalDisplay !== 'none') {
+                              el.style.display = originalDisplay;
+                          } else {
+                               if (['p', 'h1', 'h2', 'h3', 'h4', 'li', 'ul', 'div', 'section'].includes(elementType)) {
+                                  el.style.display = 'block';
+                               } else if (el.classList.contains('card-tag')) {
+                                  el.style.display = 'inline-block';
+                               } else {
+                                  el.style.display = 'inline'; // Default for spans etc.
+                               }
+                          }
+                      } else {
+                          el.style.display = 'none'; // Hide other language
+                      }
+                  });
+
+                   // Update resume button link and internal span visibility
+                   if (resumeButton) {
+                       const enSpan = resumeButton.querySelector('span.lang-en');
+                       const ptSpan = resumeButton.querySelector('span.lang-pt');
+                       if (enSpan) enSpan.style.display = (lang === 'en' ? 'inline' : 'none');
+                       if (ptSpan) ptSpan.style.display = (lang === 'pt' ? 'inline' : 'none');
+                       resumeButton.href = resumeData[lang].file;
+                   }
+                  localStorage.setItem('preferredLang', lang);
+              }
+
+               // Event listener para o *novo* botão
+               if(langToggleButton) {
+                   langToggleButton.addEventListener('click', () => {
+                       const currentLang = localStorage.getItem('preferredLang') || 'en';
+                       setLanguage(currentLang === 'en' ? 'pt' : 'en'); // Toggle
+                   });
+               }
+
+
+              // Initial Load Logic
+              let initialLang = localStorage.getItem('preferredLang');
+              if (!initialLang) {
+                  const browserLang = navigator.language || navigator.userLanguage;
+                  initialLang = (browserLang && browserLang.startsWith('pt')) ? 'pt' : 'en';
+              }
+              if (initialLang !== 'en' && initialLang !== 'pt') { initialLang = 'en'; }
+
+               // Store original display values on initial load before setting language
+               elementsToToggle.forEach(el => {
+                   const currentDisplay = window.getComputedStyle(el).display;
+                   if (!el.dataset.originalDisplay && currentDisplay !== 'none') {
+                       el.dataset.originalDisplay = currentDisplay;
+                   }
+               });
+
+              setLanguage(initialLang); // Set initial language, display, and button text
+
+          });
+    </script>
+
+</body>
+</html>
